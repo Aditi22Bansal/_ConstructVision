@@ -343,39 +343,36 @@ export default function DigitalTwinViewer() {
             </Tabs>
           </div>
 
-          <div className="bg-muted rounded-lg overflow-hidden border min-h-0 h-auto">
-            <Tabs defaultValue={viewMode} value={viewMode}>
-              <TabsContent value="3d" className="h-full">
-                <Canvas shadows camera={{ position: [10, 10, 10], fov: 50 }}>
-                  <ambientLight intensity={0.5} />
-                  <directionalLight
-                    position={[10, 10, 5]}
-                    intensity={1}
-                    castShadow
-                  />
-                  <ConstructionSite data={siteData} />
-                  <SiteGrid />
-                  <OrbitControls />
-                  <Environment preset="city" />
-                </Canvas>
-              </TabsContent>
+          <div className="bg-muted rounded-lg overflow-hidden border h-[600px]">
+  <Tabs defaultValue={viewMode} value={viewMode} className="h-full">
+    <TabsContent value="3d" className="h-full">
+      <div className="w-full h-full">
+        <Canvas shadows camera={{ position: [10, 10, 10], fov: 50 }} className="w-full h-full">
+          <ambientLight intensity={0.5} />
+          <directionalLight position={[10, 10, 5]} intensity={1} castShadow />
+          <ConstructionSite data={siteData} />
+          <SiteGrid />
+          <OrbitControls />
+          <Environment preset="city" />
+        </Canvas>
+      </div>
+    </TabsContent>
 
-              <TabsContent value="2d" className="h-full">
-                <div className="h-full flex items-center justify-center">
-                  <div className="text-center">
-                    <h3 className="text-lg font-medium mb-2">2D Site Plan</h3>
-                    <p className="text-muted-foreground">
-                      This would display a 2D floor plan or site layout
-                    </p>
-                  </div>
-                </div>
-              </TabsContent>
+    <TabsContent value="2d" className="h-full flex items-center justify-center">
+      <div className="text-center">
+        <h3 className="text-lg font-medium mb-2">2D Site Plan</h3>
+        <p className="text-muted-foreground">
+          This would display a 2D floor plan or site layout
+        </p>
+      </div>
+    </TabsContent>
 
-              <TabsContent value="data" className="h-full p-4">
-                <MockDataGenerator onDataUpdate={handleDataUpdate} />
-              </TabsContent>
-            </Tabs>
-          </div>
+    <TabsContent value="data" className="h-full p-4">
+      <MockDataGenerator onDataUpdate={handleDataUpdate} />
+    </TabsContent>
+  </Tabs>
+</div>
+
 
           <div className="grid grid-cols-3 gap-4 mt-4">
             <Card>
