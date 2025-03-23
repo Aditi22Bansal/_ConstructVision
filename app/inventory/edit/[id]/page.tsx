@@ -1,11 +1,22 @@
 import InventoryEditForm from "@/components/inventory-edit-form"
 import DashboardLayout from "@/components/dashboard-layout"
 
-export default function InventoryItemEditPage({ params }: { params: { id: string } }) {
+import { FC } from "react";
+interface Props {
+  params: { id: string };
+}
+
+const InventoryEditPage: FC<Props> = async ({ params }) => {
+  // Wait for params to be available
+  const materialId = params?.id;
+
   return (
     <DashboardLayout>
-      <InventoryEditForm materialId={params.id} />
+      <InventoryEditForm materialId={materialId} />
     </DashboardLayout>
-  )
-}
+  );
+};
+
+export default InventoryEditPage;
+
 
