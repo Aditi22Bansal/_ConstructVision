@@ -13,11 +13,13 @@ import {
   AlertTriangle,
   Truck,
   Calendar,
-  BarChart3,
   ArrowRight,
   Search,
+  Edit,
+  FileText,
 } from "lucide-react"
 import { Input } from "@/components/ui/input"
+import { useRouter } from "next/navigation"
 
 // Mock data for inventory
 const inventoryData = {
@@ -101,7 +103,7 @@ const inventoryData = {
 }
 
 // Material card component
-function MaterialCard({ material }) {
+function MaterialCard({ material, onEdit }) {
   const statusColors = {
     low: "bg-red-500/10 text-red-500 border-red-500/20",
     normal: "bg-green-500/10 text-green-500 border-green-500/20",
@@ -141,8 +143,11 @@ function MaterialCard({ material }) {
           <span className="text-xs text-muted-foreground">{Math.round(stockPercentage)}%</span>
         </div>
       </CardContent>
-      <CardFooter className="pt-0">
-        <div className="w-full text-xs text-muted-foreground">Next delivery: {material.nextDelivery}</div>
+      <CardFooter className="pt-0 flex justify-between">
+        <div className="text-xs text-muted-foreground">Next delivery: {material.nextDelivery}</div>
+        <Button variant="ghost" size="sm" onClick={() => onEdit(material)}>
+          <Edit className="h-3.5 w-3.5" />
+        </Button>
       </CardFooter>
     </Card>
   )
@@ -186,10 +191,15 @@ function ActivityItem({ activity }) {
 
 export default function InventoryDashboard() {
   const [searchQuery, setSearchQuery] = useState("")
+  const router = useRouter()
 
   const filteredMaterials = inventoryData.materials.filter((material) =>
     material.name.toLowerCase().includes(searchQuery.toLowerCase()),
   )
+
+  const handleEditMaterial = (material) => {
+    router.push(`/inventory/edit/${material.id}`)
+  }
 
   return (
     <div>
@@ -221,10 +231,16 @@ export default function InventoryDashboard() {
             onChange={(e) => setSearchQuery(e.target.value)}
           />
         </div>
-        <Button variant="ghost" size="sm" className="ml-2">
-          <BarChart3 className="h-4 w-4 mr-2" />
-          View Reports
-        </Button>
+        <div className="flex ml-4">
+          <Button variant="outline" size="sm" className="mr-2" onClick={() => router.push("/inventory/report")}>
+            <FileText className="h-4 w-4 mr-2" />
+            View Report
+          </Button>
+          <Button variant="outline" size="sm" onClick={() => router.push("/inventory/edit")}>
+            <Edit className="h-4 w-4 mr-2" />
+            Edit Inventory
+          </Button>
+        </div>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-6">
@@ -283,7 +299,7 @@ export default function InventoryDashboard() {
             <TabsContent value="all">
               <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
                 {filteredMaterials.map((material) => (
-                  <MaterialCard key={material.id} material={material} />
+                  <MaterialCard key={material.id} material={material} onEdit={handleEditMaterial} />
                 ))}
               </div>
             </TabsContent>
@@ -292,7 +308,7 @@ export default function InventoryDashboard() {
                 {filteredMaterials
                   .filter((material) => material.status === "low")
                   .map((material) => (
-                    <MaterialCard key={material.id} material={material} />
+                    <MaterialCard key={material.id} material={material} onEdit={handleEditMaterial} />
                   ))}
               </div>
             </TabsContent>
