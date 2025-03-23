@@ -28,7 +28,6 @@ import type * as THREE from "three";
 import { redirect } from "next/navigation";
 
 
-
 // Simple building model using Three.js primitives
 function ConstructionSite({ data }: { data: MockConstructionData }) {
   const siteRef = useRef<THREE.Group>(null);

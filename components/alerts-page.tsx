@@ -248,39 +248,40 @@ function AlertItem({
   }
 
   return (
-    <div
-      className="flex items-start space-x-3 p-3 rounded-md border hover:bg-muted/50 cursor-pointer transition-colors"
-      onClick={() => onClick(alert)}
-    >
-      <div className={`${severityColors[alert.severity]} p-1.5 rounded-full flex-shrink-0 mt-0.5`}>
-        <AlertTriangle className="h-3.5 w-3.5 text-white" />
-      </div>
-      <div className="flex-1">
+    <>
+      <div
+        className="flex items-start space-x-3 p-3 rounded-md border hover:bg-muted/50 cursor-pointer transition-colors"
+        onClick={() => onClick(alert)}
+      >
+        <div className={`p-1.5 rounded-full flex-shrink-0 mt-0.5 ${severityColors[alert.severity]}`}>
+          <AlertTriangle className="h-3.5 w-3.5 text-white" />
+        </div>
+        <div className="flex-1">
         <div className="flex items-start justify-between">
           <p className="font-medium">{alert.message}</p>
-          <Badge variant="outline" className={`ml-2 text-xs ${statusColors[alert.status]}`}>
-            {alert.status}
-          </Badge>
-        </div>
-        <div className="flex items-center mt-1 text-sm text-muted-foreground">
-          <span>{alert.time}</span>
-          {alert.location && (
-            <>
-              <span className="mx-1">•</span>
-              <span>{alert.location}</span>
-            </>
-          )}
-        </div>
-        <div className="flex items-center mt-2">
-          <Badge variant="outline" className="text-xs">
-            {alert.type}
-          </Badge>
-          {alert.assignedTo && (
-            <span className="ml-2 text-xs text-muted-foreground">Assigned to: {alert.assignedTo}</span>
-          )}
+        <Badge variant="outline" className={`ml-2 text-xs ${statusColors[alert.status]}`}>
+          {alert.status}
+        </Badge>
+      </div>
+      <div className="flex items-center mt-1 text-sm text-muted-foreground">
+        <span>{alert.time}</span>
+        {alert.location && (
+          <>
+            <span className="mx-1">•</span>
+            <span>{alert.location}</span>
+          </>
+        )}
+      </div><div className="flex items-center mt-2">
+        <Badge variant="outline" className="text-xs">
+          {alert.type}
+        </Badge>
+        {alert.assignedTo && (
+          <span className="ml-2 text-xs text-muted-foreground">Assigned to: {alert.assignedTo}</span>
+        )}
+            </div>
         </div>
       </div>
-    </div>
+    </>
   )
 }
 
