@@ -42,7 +42,7 @@ const sampleAlerts: ExtendedAlert[] = [
     time: "09:45 AM",
     location: "Main Storage Area",
     status: "acknowledged",
-    assignedTo: "John Smith",
+    assignedTo: "Codeini",
     details: "Current stock: 120 bags. Minimum required: 200 bags. Reorder has been initiated.",
   },
   {
