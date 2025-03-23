@@ -1,8 +1,7 @@
 "use client"
 
 import type React from "react"
-
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import {
   SidebarProvider,
   Sidebar,
@@ -17,18 +16,40 @@ import {
   SidebarMenuButton,
   SidebarTrigger,
 } from "@/components/ui/sidebar"
-import { Building2, HardHat, BarChart3, Package, AlertTriangle, Settings, User } from "lucide-react"
+import { Building2, HardHat, Package, AlertTriangle, User } from "lucide-react"
 
 export default function DashboardLayout({ children }: { children: React.ReactNode }) {
   const [activeSite, setActiveSite] = useState("Site Alpha")
+
+  const [weather, setWeather] = useState<{ temp: number; description: string } | null>(null)
+
+  useEffect(() => {
+    const fetchWeather = async () => {
+      try {
+        const apiKey = process.env.NEXT_PUBLIC_OPENWEATHER_API_KEY
+        const city = "Pune" // Change this to your preferred city
+        const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${city}&units=metric&appid=${apiKey}`)
+        const data = await response.json()
+
+        if (data.main && data.weather) {
+          setWeather({
+            temp: data.main.temp,
+            description: data.weather[0].description,
+          })
+        }
+      } catch (error) {
+        console.error("Error fetching weather data:", error)
+      }
+    }
+
+    fetchWeather()
+  }, [])
 
   const menuItems = [
     { icon: Building2, label: "Digital Twin", href: "/" },
     { icon: HardHat, label: "Safety Monitoring", href: "/safety" },
     { icon: Package, label: "Inventory", href: "/inventory" },
-    // { icon: BarChart3, label: "Analytics", href: "/analytics" },
     { icon: AlertTriangle, label: "Alerts", href: "/alerts" },
-    // { icon: Settings, label: "Settings", href: "/settings" },
   ]
 
   return (
@@ -68,6 +89,12 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
                 </SidebarMenuButton>
               </SidebarMenuItem>
             </SidebarMenu>
+            {/* Weather Section */}
+            {weather && (
+              <div className="p-4 text-sm text-gray-500">
+                🌡 {weather.temp}°C - {weather.description}
+              </div>
+            )}
           </SidebarFooter>
         </Sidebar>
 
@@ -82,4 +109,3 @@ export default function DashboardLayout({ children }: { children: React.ReactNod
     </SidebarProvider>
   )
 }
-
